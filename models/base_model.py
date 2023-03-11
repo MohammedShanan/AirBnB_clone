@@ -102,9 +102,10 @@ class BaseModel():
                 dic[key] = self.__dict__[key]
         return dic
 
-    def update_bm(self, attr, value):
+    def update_bm(self, attr_dict):
         """
             updates the BaseModel and sets the correct attributes
         """
-        setattr(self, attr, value)
+        for attr, value in attr_dict.items():
+            setattr(self, attr, value)
         self.save()

@@ -4,7 +4,8 @@ Command interpreter for AirBnB project
 """
 import cmd
 from models import cls_init, storage
-
+import re
+import json
 
 class HBNBCommand(cmd.Cmd):
     """
@@ -127,6 +128,13 @@ class HBNBCommand(cmd.Cmd):
                 obj_list.append(obj.__repr__())
         print(obj_list)
 
+    def __create_dict(self, str):
+        str = str.replace("'", '"')
+        try:
+            new_dict = json.loads(str)
+        except json.JSONDecodeError:
+            return None
+        return new_dict
     def do_update(self, line):
         """update: update [ARG] [ARG1] [ARG2] [ARG3]
         ARG = Class
@@ -147,14 +155,14 @@ class HBNBCommand(cmd.Cmd):
         elif len(line) < 4:
             print(HBNBCommand.ERR[5])
         else:
-            attr = line[2]
-            value = line[3].strip('"')
-            if value.isdigit():
-                if int(value) == float(value):
-                    value = int(value)
-                else:
-                    value = float(value)
-            obj.update_bm(attr, value)
+            pattern = re.compile(r"^.+\s.+\s({.+})")
+            match = re.search(pattern, " ".join(line))
+            if match:
+                update_dict = self.__create_dict(match.group(1))
+            else:
+                str = "{{'{0}': {1}}}".format(line[2], line[3])
+                update_dict = self.__create_dict(str)
+            obj.update_bm(update_dict)
 
     def do_BaseModel(self, line):
         """class method with .function() syntax
@@ -217,8 +225,16 @@ class HBNBCommand(cmd.Cmd):
         if '(' and ')' in method:
             method, cls_args = method.strip('.)').split('(')
             if method == 'update':
-                cls_args = cls_args.replace(',', "", 2)
-            args = "{} {}".format(cls_name, cls_args).replace('"', "")
+                pattern = re.compile(r'^(".+"), ({.+})')
+                match = re.search(pattern, cls_args)
+                if match:
+                    cls_args = [match.group(1), match.group(2)]
+                    cls_args[0] = cls_args[0].replace('"', "")
+                    cls_args = " ".join(cls_args)
+                else:
+                    cls_args = cls_args.replace('"', "")  
+                    cls_args = cls_args.replace(',', "")  
+            args = "{} {}".format(cls_name, cls_args)
             for k in method_dict.keys():
                 if k == method:
                     method_dict[k](args)
