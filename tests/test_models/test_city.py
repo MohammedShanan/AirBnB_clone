@@ -28,7 +28,7 @@ class TestCity(unittest.TestCase):
         """initializes new City instance for testing"""
         self.my_city = City()
 
-    def test_base_model_init(self):
+    def test_city_init(self):
         """checks if City is properly instantiated"""
         self.assertNotEqual(self.my_city.id, None)
         self.assertNotEqual(self.my_city.created_at, None)
