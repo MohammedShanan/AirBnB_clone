@@ -54,8 +54,7 @@ class HBNBCommand(cmd.Cmd):
             obj_name, obj_id = line[0], line[1]
             obj_id = obj_id.replace('"', "")
             for k, v in storage_objs.items():
-                id = v.id
-                cls_name = v.__class__.__name__
+                cls_name, id = k.split('.')
                 if obj_name == cls_name and obj_id == id:
                     return v
             print(HBNBCommand.ERR[3])
@@ -237,8 +236,8 @@ class HBNBCommand(cmd.Cmd):
                     cls_args = " ".join(cls_args)
                 else:
                     cls_args = cls_args.replace(',', "")
+                    cls_args = cls_args.replace('"', "")
             args = "{} {}".format(cls_name, cls_args)
-            print(args)
             for k in method_dict.keys():
                 if k == method:
                     method_dict[k](args)
