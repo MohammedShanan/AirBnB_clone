@@ -162,8 +162,7 @@ class HBNBCommand(cmd.Cmd):
             if match:
                 update_dict = self.__create_dict(match.group(1))
             else:
-                str = "{{'{0}': {1}}}".format(line[2], line[3])
-                update_dict = self.__create_dict(str)
+                update_dict = {line[2]: line[3]}
             obj.update_bm(update_dict)
 
     def do_BaseModel(self, line):
