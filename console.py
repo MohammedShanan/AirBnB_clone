@@ -7,6 +7,7 @@ from models import cls_init, storage
 import re
 import json
 
+
 class HBNBCommand(cmd.Cmd):
     """
     Command inerpreter class
@@ -51,8 +52,10 @@ class HBNBCommand(cmd.Cmd):
         else:
             storage_objs = storage.all()
             obj_name, obj_id = line[0], line[1]
+            obj_id = obj_id.replace('"', "")
             for k, v in storage_objs.items():
-                cls_name, id = k.split('.')
+                id = v.id
+                cls_name = v.__class__.__name__
                 if obj_name == cls_name and obj_id == id:
                     return v
             print(HBNBCommand.ERR[3])
@@ -135,6 +138,7 @@ class HBNBCommand(cmd.Cmd):
         except json.JSONDecodeError:
             return None
         return new_dict
+
     def do_update(self, line):
         """update: update [ARG] [ARG1] [ARG2] [ARG3]
         ARG = Class
@@ -160,7 +164,7 @@ class HBNBCommand(cmd.Cmd):
             if match:
                 update_dict = self.__create_dict(match.group(1))
             else:
-                str = "{{'{0}': {1}}}".format(line[2], line[3])
+                str = "{{{0}: {1}}}".format(line[2], line[3])
                 update_dict = self.__create_dict(str)
             obj.update_bm(update_dict)
 
@@ -232,9 +236,9 @@ class HBNBCommand(cmd.Cmd):
                     cls_args[0] = cls_args[0].replace('"', "")
                     cls_args = " ".join(cls_args)
                 else:
-                    cls_args = cls_args.replace('"', "")  
-                    cls_args = cls_args.replace(',', "")  
+                    cls_args = cls_args.replace(',', "")
             args = "{} {}".format(cls_name, cls_args)
+            print(args)
             for k in method_dict.keys():
                 if k == method:
                     method_dict[k](args)
