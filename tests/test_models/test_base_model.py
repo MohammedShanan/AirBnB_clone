@@ -66,6 +66,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_to_dict(self):
+        """to_dict should return a dictionary representation of class BaseModel"""
         model_dict = self.my_model.to_dict()
         self.assertIsInstance(model_dict, dict)
         keys = ['__class__', 'updated_at', 'created_at', 'id']
