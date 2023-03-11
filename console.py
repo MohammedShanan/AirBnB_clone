@@ -52,7 +52,6 @@ class HBNBCommand(cmd.Cmd):
         else:
             storage_objs = storage.all()
             obj_name, obj_id = line[0], line[1]
-            obj_id = obj_id.replace('"', "")
             for k, v in storage_objs.items():
                 cls_name, id = k.split('.')
                 if obj_name == cls_name and obj_id == id:
@@ -163,7 +162,7 @@ class HBNBCommand(cmd.Cmd):
             if match:
                 update_dict = self.__create_dict(match.group(1))
             else:
-                str = "{{{0}: {1}}}".format(line[2], line[3])
+                str = "{{'{0}': {1}}}".format(line[2], line[3])
                 update_dict = self.__create_dict(str)
             obj.update_bm(update_dict)
 
