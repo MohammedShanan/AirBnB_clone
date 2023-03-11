@@ -139,6 +139,8 @@ class HBNBCommand(cmd.Cmd):
                  City.update(1234-abcd, {'name': 'Chicago', 'address': 'None'})
         """
         obj = self.get_obj(line)
+        if obj == None:
+            return
         line = line.split()
         if len(line) < 3:
             print(HBNBCommand.ERR[4])
@@ -214,7 +216,11 @@ class HBNBCommand(cmd.Cmd):
         }
         if '(' and ')' in method:
             method, cls_args = method.strip('.)').split('(')
-            args = "{} {}".format(cls_name, cls_args)
+            if method == 'update':
+                cls_args = cls_args.replace(',', "", 2)
+                print(cls_args)
+            args = "{} {}".format(cls_name, cls_args).replace('"', "")
+            print(args)
             for k in method_dict.keys():
                 if k == method:
                     method_dict[k](args)
