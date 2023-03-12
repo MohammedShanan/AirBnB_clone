@@ -66,6 +66,7 @@ class TestFileStorage(unittest.TestCase):
         """checks if all() function returns newly created instances"""
         obj_id_list = [self.state_obj.id, self.bm_obj.id]
         obj_dict = storage.all()
+        print(obj_dict)
         print(obj_id_list)
         for obj in obj_dict.values():
             print(obj.id)
