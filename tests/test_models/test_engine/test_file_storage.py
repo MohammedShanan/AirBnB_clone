@@ -68,6 +68,7 @@ class TestFileStorage(unittest.TestCase):
         obj_dict = storage.all()
         print(obj_dict)
         print(obj_id_list)
+        
         for obj in obj_dict.values():
             print(obj.id)
             self.assertTrue(obj.id in obj_id_list)
