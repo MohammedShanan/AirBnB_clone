@@ -36,6 +36,7 @@ class TestFileStorage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """sets up the class"""
+        remove(file_name)
         cls.bm_obj = BaseModel()
         cls.state_obj = State()
         cls.state_obj.name = "Tennessee"
@@ -68,7 +69,7 @@ class TestFileStorage(unittest.TestCase):
         obj_dict = storage.all()
         print(obj_dict)
         print(obj_id_list)
-        
+
         for obj in obj_dict.values():
             print(obj.id)
             self.assertTrue(obj.id in obj_id_list)
@@ -109,10 +110,12 @@ class TestFileStorage(unittest.TestCase):
         new_storage.reload()
         all_obj = new_storage.all()
         id = self.bm_obj.id
-        actual = False    
+        actual = False
         for v in all_obj.values():
             if v.id == id:
-                actual = True         
+                actual = True
         self.assertTrue(actual)
+
+
 if __name__ == '__main__':
     unittest.main()
