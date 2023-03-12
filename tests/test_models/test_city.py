@@ -5,6 +5,7 @@ import time
 import unittest
 import models
 import pep8
+from os import remove
 
 City = models.city.City
 
@@ -24,6 +25,10 @@ class TestCityStyle(unittest.TestCase):
 
 
 class TestCity(unittest.TestCase):
+    def tearDownClass():
+        """tidies up the tests removing storage objects"""
+        remove('file.json')
+
     def setUp(self):
         """initializes new City instance for testing"""
         self.my_city = City()

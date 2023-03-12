@@ -5,7 +5,7 @@ import time
 import unittest
 import models
 import pep8
-
+from os import remove
 Place = models.place.Place
 
 
@@ -24,6 +24,9 @@ class TestPlaceStyle(unittest.TestCase):
 
 
 class TestPlace(unittest.TestCase):
+    def tearDownClass():
+        """tidies up the tests removing storage objects"""
+        remove('file.json')
     def setUp(self):
         """initializes new Place instance for testing"""
         self.my_place = Place()

@@ -8,7 +8,7 @@ import time
 import unittest
 import models
 import pep8
-
+from os import remove
 BaseModel = models.base_model.BaseModel
 
 
@@ -27,6 +27,10 @@ class TestBaseModelStyle(unittest.TestCase):
 
 
 class TestBaseModel(unittest.TestCase):
+    def tearDownClass():
+        """tidies up the tests removing storage objects"""
+        remove('file.json')
+
     def setUp(self):
         """initializes new BaseModel instance for testing"""
         self.my_model = BaseModel()

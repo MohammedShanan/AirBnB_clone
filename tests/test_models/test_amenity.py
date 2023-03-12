@@ -5,7 +5,7 @@ import time
 import unittest
 import models
 import pep8
-
+from os import remove
 Amenity = models.amenity.Amenity
 
 
@@ -24,6 +24,10 @@ class TestAmenityStyle(unittest.TestCase):
 
 
 class TestAmenity(unittest.TestCase):
+    def tearDownClass():
+        """tidies up the tests removing storage objects"""
+        remove('file.json')
+
     def setUp(self):
         """initializes new Amenity instance for testing"""
         self.my_amenity = Amenity()
@@ -38,6 +42,7 @@ class TestAmenity(unittest.TestCase):
         """add name attribute"""
         self.my_amenity.name = "Tekken 8!!!"
         self.assertEqual(self.my_amenity.name, "Tekken 8!!!")
+
     def test_save(self):
         """save function should add updated_at attribute"""
         prev_updated_at = self.my_amenity.updated_at

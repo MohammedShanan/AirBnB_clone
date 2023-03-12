@@ -36,6 +36,9 @@ class TestFileStorage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """sets up the class"""
+        storage.delete_all()
+        if path.isfile(file_name):
+            remove(file_name)
         cls.bm_obj = BaseModel()
         cls.state_obj = State()
         cls.state_obj.name = "Tennessee"
@@ -66,11 +69,7 @@ class TestFileStorage(unittest.TestCase):
         """checks if all() function returns newly created instances"""
         obj_id_list = [self.state_obj.id, self.bm_obj.id]
         obj_dict = storage.all()
-        print(obj_dict)
-        print(obj_id_list)
-
         for obj in obj_dict.values():
-            print(obj.id)
             self.assertTrue(obj.id in obj_id_list)
 
     def test_obj_saved_to_file(self):

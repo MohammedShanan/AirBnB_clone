@@ -5,7 +5,7 @@ import time
 import unittest
 import models
 import pep8
-
+from os import remove
 State = models.state.State
 
 
@@ -24,6 +24,9 @@ class TestStateStyle(unittest.TestCase):
 
 
 class TestState(unittest.TestCase):
+    def tearDownClass():
+        """tidies up the tests removing storage objects"""
+        remove('file.json')
     def setUp(self):
         """initializes new State instance for testing"""
         self.my_state = State()

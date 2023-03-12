@@ -5,7 +5,7 @@ import time
 import unittest
 import models
 import pep8
-
+from os import remove
 User = models.user.User
 
 
@@ -24,6 +24,9 @@ class TestUserStyle(unittest.TestCase):
 
 
 class TestUser(unittest.TestCase):
+    def tearDownClass():
+        """tidies up the tests removing storage objects"""
+        remove('file.json')
     def setUp(self):
         """initializes new User instance for testing"""
         self.my_user = User()
