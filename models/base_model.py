@@ -85,7 +85,8 @@ class BaseModel():
         elif not isinstance(attr_dict['updated_at'], datetime):
             attr_dict['updated_at'] = datetime.fromisoformat(
                 attr_dict['updated_at'])
-        attr_dict.pop('__class__')
+        if '__class__' in attr_dict.keys():
+            attr_dict.pop('__class__')
         for attr, value in attr_dict.items():
             setattr(self, attr, value)
 
