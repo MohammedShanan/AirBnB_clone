@@ -36,7 +36,6 @@ class TestFileStorage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """sets up the class"""
-        remove(file_name)
         cls.bm_obj = BaseModel()
         cls.state_obj = State()
         cls.state_obj.name = "Tennessee"
