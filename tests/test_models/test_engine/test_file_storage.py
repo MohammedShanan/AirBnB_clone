@@ -1,16 +1,14 @@
 #!/usr/bin/python3
 """
-Unit Test for BaseModel Class
+Unit Test for File storage Class
 """
 import unittest
-from datetime import datetime
-import inspect
 import json
 import models
 from models import engine
 from models.engine.file_storage import FileStorage
 import pep8
-from os import environ, stat, remove, path
+from os import remove, path
 
 BaseModel = models.base_model.BaseModel
 State = models.state.State
