@@ -64,10 +64,10 @@ class TestFileStorage(unittest.TestCase):
 
     def test_all(self):
         """checks if all() function returns newly created instances"""
-        obj_list = [self.state_obj, self.bm_obj]
+        obj_id_list = [self.state_obj.id, self.bm_obj.id]
         obj_dict = storage.all()
         for obj in obj_dict.values():
-            self.assertTrue(obj in obj_list)
+            self.assertTrue(obj.id in obj_id_list)
 
     def test_obj_saved_to_file(self):
         """checks proper FileStorage instantiation"""
