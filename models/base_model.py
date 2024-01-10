@@ -2,7 +2,8 @@
 """
 BaseModel Class of Models Module
 """
-from typing import Any
+import models
+import json
 import uuid
 from datetime import datetime
 class BaseModel():
@@ -16,11 +17,19 @@ class BaseModel():
             self.id = str(uuid.uuid4())
             self.created_at = datetime.utcnow()
             self.updated_at = datetime.utcnow()
+            models.storage.new(self)
+
     def __str__(self):
         class_name = type(self).__name__
         return "[{}] ({}) {}".format(class_name,self.id,self.__dict__)
+
     def save(self):
+        """
+            private: converts attr_dict values to python class attributes
+        """
         self.updated_at = datetime.utcnow()
+        models.storage.save()
+
     
     def to_dict(self):
         new_dict = {"__class__": type(self).__name__}
@@ -28,16 +37,36 @@ class BaseModel():
             if key == "created_at" or key == "updated_at":
                 new_dict[key] = datetime.isoformat(self.__dict__[key])
             else:
-                x = self.id
-                new_dict[key] = x
+                new_dict[key] = self.__dict__[key]
         return new_dict
+    def __is_serializable(self, obj_v):
+        """
+            private: checks if object is serializable
+        """
+        try:
+            obj_to_str = json.dumps(obj_v)
+            return obj_to_str is not None and isinstance(obj_to_str, str)
+        except TypeError:
+            return False
+
+    def to_json_str(self):
+        """
+            returns json representation of self
+        """
+        obj_class = self.__class__.__name__
+        bm_dict = {
+            k: v if self.__is_serializable(v) else str(v)
+            for k, v in self.__dict__.items()
+        }
+        bm_dict['__class__'] = obj_class
+        return bm_dict
     
     def __set_attr(self, attr_dict):
         """
             private: converts attr_dict values to python class attributes
         """
         if 'id' not in attr_dict:
-            attr_dict['id'] = str(uuid4)
+            attr_dict['id'] = str(uuid.uuid4())
         if 'created_at' not in attr_dict:
             attr_dict['created_at'] = datetime.utcnow()
         elif not isinstance(attr_dict['created_at'], datetime):
@@ -55,24 +84,3 @@ class BaseModel():
 
 
 
-my_model = BaseModel()
-my_model.name = "My_First_Model"
-my_model.my_number = 89
-print(my_model.id)
-print(my_model)
-print(type(my_model.created_at))
-print("--")
-my_model_json = my_model.to_dict()
-print(my_model_json)
-print("JSON of my_model:")
-for key in my_model_json.keys():
-    print("\t{}: ({}) - {}".format(key, type(my_model_json[key]), my_model_json[key]))
-
-print("--")
-my_new_model = BaseModel(**my_model_json)
-print(my_new_model.id)
-print(my_new_model)
-print(type(my_new_model.created_at))
-
-print("--")
-print(my_model is my_new_model)
