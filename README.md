@@ -32,7 +32,7 @@ python console.py
 
 ## Commands table
 
-| Commands |          Usage example           |                                  Function |
+| Commands |          Usage example           |   Function |
 | -------- | :------------------------------: | ---------------------------------------: |
 | help     |              `help`              |          displays all commands available |
 | create   |        `create BaseModel`        |                      create a new object |
