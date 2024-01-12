@@ -24,8 +24,6 @@ git clone https://github.com/MohammedShanan/AirBnB_clone.git
 ./console
 ```
 
-## Or
-
 ```bash
 python console.py
 ```
