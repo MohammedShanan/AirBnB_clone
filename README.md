@@ -43,7 +43,7 @@ python console.py
 | destroy  |      `destroy User 123abc`       |              destroy object with it's id |
 | quit     |              `quit`              |                         exit the program |
 
-## Another way to use command is class.command(args)
+## Another way to use commands is class.command(args)
 
 Ex
 
