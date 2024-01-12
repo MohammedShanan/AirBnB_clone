@@ -2,26 +2,29 @@
 """
 BaseModel Class of Models Module
 """
+
 import models
-import json
-import uuid
+from uuid import uuid4
 from datetime import datetime
+import json
+
+
 class BaseModel():
     """
-    attributes and functions for BaseModel class
+        attributes and functions for BaseModel class
     """
+
     def __init__(self, *args, **kwargs):
+        """
+            instantiation of new BaseModel Class
+        """
         if kwargs:
             self.__set_attr(kwargs)
         else:
-            self.id = str(uuid.uuid4())
+            self.id = str(uuid4())
             self.created_at = datetime.utcnow()
             self.updated_at = datetime.utcnow()
             models.storage.new(self)
-
-    def __str__(self):
-        class_name = type(self).__name__
-        return "[{}] ({}) {}".format(class_name,self.id,self.__dict__)
 
     def save(self):
         """
@@ -30,15 +33,6 @@ class BaseModel():
         self.updated_at = datetime.utcnow()
         models.storage.save()
 
-    
-    def to_dict(self):
-        new_dict = {"__class__": type(self).__name__}
-        for key in self.__dict__:
-            if key == "created_at" or key == "updated_at":
-                new_dict[key] = datetime.isoformat(self.__dict__[key])
-            else:
-                new_dict[key] = self.__dict__[key]
-        return new_dict
     def __is_serializable(self, obj_v):
         """
             private: checks if object is serializable
@@ -60,13 +54,27 @@ class BaseModel():
         }
         bm_dict['__class__'] = obj_class
         return bm_dict
-    
+
+    def __str__(self):
+        """
+            returns string type representation of object instance
+        """
+        class_name = type(self).__name__
+        return "[{}] ({}) {}".format(class_name, self.id, self.__dict__)
+
+    def __repr__(self):
+        """
+            returns string type representation of object instance
+        """
+        class_name = type(self).__name__
+        return "[{}] ({}) {}".format(class_name, self.id, self.__dict__)
+
     def __set_attr(self, attr_dict):
         """
             private: converts attr_dict values to python class attributes
         """
         if 'id' not in attr_dict:
-            attr_dict['id'] = str(uuid.uuid4())
+            attr_dict['id'] = str(uuid4)
         if 'created_at' not in attr_dict:
             attr_dict['created_at'] = datetime.utcnow()
         elif not isinstance(attr_dict['created_at'], datetime):
@@ -82,5 +90,24 @@ class BaseModel():
         for attr, value in attr_dict.items():
             setattr(self, attr, value)
 
+    def to_dict(self):
+        """
+            return a dictionary representation of the BaseModel
+        """
+        class_name = type(self).__name__
+        dic = {"__class__": class_name}
+        for key in self.__dict__:
+            if key == 'updated_at' or key == 'created_at':
+                dic[key] = datetime.isoformat(self.__dict__[key])
+            else:
+                dic[key] = self.__dict__[key]
+        return dic
 
-
+    def update_bm(self, attr_dict):
+        """
+            updates the BaseModel and sets the correct attributes
+        """
+        for attr, value in attr_dict.items():
+            if attr not in ["id", "created_at", "updated_at"]:
+                setattr(self, attr, value)
+        self.save()

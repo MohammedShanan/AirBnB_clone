@@ -1,24 +1,38 @@
 #!/usr/bin/python3
+"""
+Handles I/O, writing and reading, of JSON for storage of all class instances
+"""
 import json
-from models import base_model
+import os
+from models import base_model, user, state, city, place, amenity, review
+
+
 class FileStorage():
     """
         handles long term storage of all class instances
     """
     cls_init = {
-        'BaseModel': base_model.BaseModel
-        }
+        'BaseModel': base_model.BaseModel,
+        'User': user.User,
+        'City': city.City,
+        'State': state.State,
+        'Place': place.Place,
+        'Amenity': amenity.Amenity,
+        'Review': review.Review
+    }
     """cls_init - this variable is a dictionary with:
     keys: Class Names
     values: Class type (used for instantiation)
     """
     __file_path = './file.json'
     __objects = {}
+
     def all(self):
         """
             returns private attribute: __objects
         """
         return FileStorage.__objects
+
     def new(self, obj):
         """
             sets / updates in __objects the obj with key <obj class name>.id
@@ -52,4 +66,18 @@ class FileStorage():
             obj_dict = FileStorage.cls_init[cls_name](**obj_dict)
             FileStorage.__objects[obj_id] = obj_dict
 
+    def delete(self, obj):
+        """
+            deletes obj from __objects if it's inside
+        """
+        obj_key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        del FileStorage.__objects[obj_key]
+        self.save()
 
+    def delete_all(self):
+        """
+            deletes all stored objects, for testing purposes
+        """
+        del FileStorage.__objects
+        FileStorage.__objects = {}
+        self.save()
