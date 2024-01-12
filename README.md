@@ -14,25 +14,25 @@ Project is a clone of the AirBnB application and website.This repository contain
 
 ### To install the project run
 
-```
+```bash
 git clone https://github.com/MohammedShanan/AirBnB_clone.git
 ```
 
 ## To start working with command interpreter run
 
-```
+```bash
 ./console
 ```
 
 ## Or
 
-```
+```bash
 python console.py
 ```
 
 ## Commands table
 
-| Commands |          Usage example           |                                  Fuction |
+| Commands |          Usage example           |                                  Function |
 | -------- | :------------------------------: | ---------------------------------------: |
 | help     |              `help`              |          displays all commands available |
 | create   |        `create BaseModel`        |                      create a new object |
@@ -47,10 +47,10 @@ python console.py
 
 Ex
 
-```
+```text
 User.create()
 ```
 
-```
+```text
 User.all()
 ```
