@@ -5,11 +5,9 @@ Unit Test for console
 import console
 from contextlib import contextmanager
 from datetime import datetime
-import inspect
 from io import StringIO
 import models
 import pep8
-import sys
 from os import environ, stat
 import unittest
 
@@ -52,7 +50,7 @@ class TestHBNBcmdCreateUpdate(unittest.TestCase):
 
     def test_attr_user_id(self):
         """... checks if proper parameter for user_id was created"""
-        self.CLI.do_update('Place {} user_id "o111"'.format(self.obj.id))
+        self.CLI.do_update('Place {} user_id o111'.format(self.obj.id))
         actual = self.obj.user_id
         print(actual)
         expected = "o111"
@@ -60,14 +58,14 @@ class TestHBNBcmdCreateUpdate(unittest.TestCase):
 
     def test_attr_city_id(self):
         """... checks if proper parameter for city_id was created"""
-        self.CLI.do_update('Place {} city_id "A1111"'.format(self.obj.id))
+        self.CLI.do_update('Place {} city_id A1111'.format(self.obj.id))
         actual = self.obj.city_id
         expected = "A1111"
         self.assertEqual(expected, actual)
 
     def test_attr_name(self):
         """... checks if proper parameter for name was created"""
-        self.CLI.do_update('Place {} name "Ashina_castle"'.format(self.obj.id))
+        self.CLI.do_update('Place {} name Ashina_castle'.format(self.obj.id))
         actual = self.obj.name
         expected = 'Ashina_castle'
         self.assertEqual(expected, actual)

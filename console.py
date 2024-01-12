@@ -135,6 +135,11 @@ class HBNBCommand(cmd.Cmd):
             new_dict = json.loads(str)
         except json.JSONDecodeError:
             return None
+        for k, v in new_dict.items():
+            if v.replace(".", "").isnumeric():
+                new_dict[k] = float(v)
+            elif v.isdigit():
+                new_dict[k] = int(v)
         return new_dict
 
     def do_update(self, line):
@@ -162,7 +167,12 @@ class HBNBCommand(cmd.Cmd):
             if match:
                 update_dict = self.__create_dict(match.group(1))
             else:
-                update_dict = {line[2]: line[3]}
+                if line[3].isdigit():
+                    update_dict = {line[2]: int(line[3])}
+                elif line[3].replace(".", "").isnumeric():
+                    update_dict = {line[2]: float(line[3])}
+                else:
+                    update_dict = {line[2]: line[3]}
             obj.update_bm(update_dict)
 
     def do_BaseModel(self, line):
