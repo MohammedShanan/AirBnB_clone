@@ -129,17 +129,24 @@ class HBNBCommand(cmd.Cmd):
                 obj_list.append(obj.__repr__())
         print(obj_list)
 
+    def __parse_nums(self, string):
+        string = string.strip()
+        if "'" in string:
+            return string.replace("'", "")
+        if string.isdigit():
+            return int(string)
+        elif string.replace(".", "").isnumeric():
+            return float(string)
+        return string
+
     def __create_dict(self, str):
-        str = str.replace("'", '"')
-        try:
-            new_dict = json.loads(str)
-        except json.JSONDecodeError:
-            return None
-        for k, v in new_dict.items():
-            if v.replace(".", "").isnumeric():
-                new_dict[k] = float(v)
-            elif v.isdigit():
-                new_dict[k] = int(v)
+        str = str.replace("\"", "'")
+        pattern = re.compile(r"('?\w+'?:\s?'?[\w\.]+'?),?")
+        matches = re.findall(pattern, str)
+        new_dict = {}
+        for match in matches:
+            key, value = map(self.__parse_nums, match.split(":"))
+            new_dict[key] = value
         return new_dict
 
     def do_update(self, line):
@@ -243,7 +250,7 @@ class HBNBCommand(cmd.Cmd):
                     cls_args[0] = cls_args[0].replace('"', "")
                     cls_args = " ".join(cls_args)
                 else:
-                    cls_args = cls_args.replace(',', "")
+                    cls_args = cls_args.replace(',', "", 1)
                     cls_args = cls_args.replace('"', "")
             args = "{} {}".format(cls_name, cls_args)
             for k in method_dict.keys():
